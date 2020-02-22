@@ -7,7 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+
+import com.example.notes.Database.DatabaseHelper;
 
 public class EditNote extends AppCompatActivity {
 
@@ -51,7 +52,7 @@ public class EditNote extends AppCompatActivity {
         if ( noteString.trim().equals("") ) {
 
             if ( !id.equals("null") ) {
-                database.delete(id);
+                database.delete_table1(id);
             }
             return;
 
@@ -59,11 +60,11 @@ public class EditNote extends AppCompatActivity {
 
         if ( id.equals("null") ) {
 
-            database.insert(noteString);
+            database.insert_table1(noteString);
 
         }
         else {
-                database.update(id, noteString);
+                database.update_table1(id, noteString);
 
         }
 

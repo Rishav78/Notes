@@ -1,6 +1,7 @@
 package com.example.notes.RecylerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.notes.EditNote;
 import com.example.notes.Modules.Note;
 import com.example.notes.R;
 
@@ -39,6 +41,16 @@ public class NotesRecylerView extends RecyclerView.Adapter<NotesRecylerView.MyVi
 
         holder.note.setText(this.notes.get(position).getNote());
 
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, EditNote.class);
+                intent.putExtra("id", Integer.toString(notes.get(position).getId()));
+                intent.putExtra("note", notes.get(position).getNote());
+                context.startActivity(intent);
+            }
+        });
+
     }
 
     @Override
@@ -48,10 +60,12 @@ public class NotesRecylerView extends RecyclerView.Adapter<NotesRecylerView.MyVi
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
+        View view;
         TextView note, lastupdate;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
+            view = itemView;
             note = itemView.findViewById(R.id.note);
             lastupdate = itemView.findViewById(R.id.lastupdate);
         }

@@ -44,7 +44,7 @@ public class Notes extends Fragment {
         addNotes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), EditNote.class));
+                startEditNoteActivity();
             }
         });
 
@@ -57,7 +57,15 @@ public class Notes extends Fragment {
         return v;
     }
 
+    public void startEditNoteActivity() {
+        Intent intent = new Intent(getActivity(), EditNote.class);
+        intent.putExtra("id", "null");
+        startActivity(intent);
+    }
+
     public void retrieveData() {
+
+        notes.clear();
 
         StringBuffer str = new StringBuffer();
         Cursor res = database.getAllData();
@@ -74,4 +82,9 @@ public class Notes extends Fragment {
         notesView.setAdapter(new NotesRecylerView(getActivity(), notes));
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        retrieveData();
+    }
 }

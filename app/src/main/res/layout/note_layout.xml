@@ -17,7 +17,6 @@
 
     <TextView
         android:id="@+id/note"
-        android:text="Rishav"
         android:textColor="#999999"
         android:textSize="20dp"
         android:layout_width="match_parent"

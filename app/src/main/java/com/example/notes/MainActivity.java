@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     private PageAdapter mPageAdapter;
     private ViewPager viewPager;
-    DatabaseHelper dbs;
+    private DatabaseHelper dbs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -42,4 +42,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor res = db.rawQuery("select * from " + table_name, null);
         return res;
     }
+
+    public boolean update(String id, String note) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(this.col_2, note);
+        db.update(table_name, values, "ID = ?", new String[] { id });
+        return true;
+    }
 }

@@ -2,13 +2,17 @@ package com.example.notes;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 public class EditNote extends AppCompatActivity {
 
     private String id;
+    private Button backToNotes;
     private DatabaseHelper database;
     private EditText note;
 
@@ -18,6 +22,7 @@ public class EditNote extends AppCompatActivity {
         setContentView(R.layout.activity_edit_note);
 
         note = findViewById(R.id.updateNote);
+        backToNotes = findViewById(R.id.backToNotes);
         database = new DatabaseHelper(this);
         id = getIntent().getStringExtra("id");
 
@@ -27,6 +32,13 @@ public class EditNote extends AppCompatActivity {
             note.setText(str);
 
         }
+
+        backToNotes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BackToNotesActivity();
+            }
+        });
 
     }
 
@@ -47,5 +59,11 @@ public class EditNote extends AppCompatActivity {
 
         }
 
+    }
+
+    public void BackToNotesActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }

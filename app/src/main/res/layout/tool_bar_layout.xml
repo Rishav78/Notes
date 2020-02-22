@@ -8,6 +8,7 @@
         android:layout_height="wrap_content">
 
         <Button
+            android:id="@+id/backToNotes"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_chevron_left_black_24dp"/>

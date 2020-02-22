@@ -48,14 +48,22 @@ public class EditNote extends AppCompatActivity {
 
         final String noteString = note.getText().toString();
 
+        if ( noteString.trim().equals("") ) {
+
+            if ( !id.equals("null") ) {
+                database.delete(id);
+            }
+            return;
+
+        }
+
         if ( id.equals("null") ) {
 
             database.insert(noteString);
 
         }
         else {
-
-            database.update(id, noteString);
+                database.update(id, noteString);
 
         }
 

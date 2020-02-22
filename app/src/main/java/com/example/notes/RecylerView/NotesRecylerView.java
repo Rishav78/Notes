@@ -37,10 +37,8 @@ public class NotesRecylerView extends RecyclerView.Adapter<NotesRecylerView.MyVi
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-
-
         holder.note.setText(this.notes.get(position).getNote());
-
+        holder.lastupdate.setText(this.notes.get(position).getUpdatedAt());
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

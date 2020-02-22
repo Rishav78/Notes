@@ -8,12 +8,17 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String db_name = "notes.db";
     private final String table_name = "id";
     private final String col_1 = "ID";
     private final String col_2 = "NOTE";
+    private final String col_3 = "updatedAt";
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, db_name, null, 1);
@@ -21,7 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table " + table_name + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, NOTE TEXT)");
+        db.execSQL("create table " + table_name + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, NOTE TEXT, UPDATEDAT TEXT)");
     }
 
     @Override
@@ -32,9 +37,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean insert(String note) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues content = new ContentValues();
-        content.put(this.col_2, note);
-        return db.insert(table_name, null, content) == -1;
+        String time = getCurrentDateAndTime();
+        ContentValues values = new ContentValues();
+        values.put(this.col_2, note);
+        values.put(this.col_3, time);
+        return db.insert(table_name, null, values) == -1;
     }
 
     public Cursor getAllData() {
@@ -46,8 +53,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean update(String id, String note) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        String time = getCurrentDateAndTime();
         values.put(this.col_2, note);
+        values.put(this.col_3, time);
         db.update(table_name, values, "ID = ?", new String[] { id });
         return true;
+    }
+
+    public boolean delete(String id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(table_name, "ID = ?", new String[] { id });
+        return true;
+    }
+
+    private String getCurrentDateAndTime() {
+        LocalDateTime date = LocalDateTime.now();
+        DateTimeFormatter format1 = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        return date.format(format1);
     }
 }

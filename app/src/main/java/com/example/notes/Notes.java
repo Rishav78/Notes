@@ -70,15 +70,16 @@ public class Notes extends Fragment {
         StringBuffer str = new StringBuffer();
         Cursor res = database.getAllData();
 
-        if ( res.getCount() == 0 ) {
+        while ( res.moveToNext() ) {
+            int ID = Integer.parseInt(res.getString(0));
+            String NOTE = res.getString(1), UPDATEDAT = res.getString(2);
+            notes.add(new Note(ID, NOTE, UPDATEDAT));
+        }
+
+        if ( notes.size() == 0 ) {
             Toast.makeText(getActivity(), "No data in the database", Toast.LENGTH_LONG).show();
             return;
         }
-
-        while ( res.moveToNext() ) {
-            notes.add(new Note(Integer.parseInt(res.getString(0)), res.getString(1)));
-        }
-        notes.removeIf(n -> (n.getNote().trim().equals("")));
         notesView.setAdapter(new NotesRecylerView(getActivity(), notes));
     }
 

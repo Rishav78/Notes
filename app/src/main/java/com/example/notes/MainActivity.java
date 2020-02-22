@@ -3,7 +3,10 @@ package com.example.notes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import com.example.notes.Adapters.PageAdapter;
 import com.google.android.material.tabs.TabLayout;
@@ -25,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         setupViewPager(viewPager);
 
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tabs);
+        tabLayout.setTabTextColors(Color.parseColor("#ffffff"), Color.parseColor("#ffa500"));
         tabLayout.setupWithViewPager(viewPager);
 
     }

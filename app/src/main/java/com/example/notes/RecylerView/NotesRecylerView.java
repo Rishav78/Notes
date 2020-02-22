@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,6 +37,7 @@ public class NotesRecylerView extends RecyclerView.Adapter<NotesRecylerView.MyVi
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
 
+        holder.note.setText(this.notes.get(position).getNote());
 
     }
 
@@ -46,8 +48,12 @@ public class NotesRecylerView extends RecyclerView.Adapter<NotesRecylerView.MyVi
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
+        TextView note, lastupdate;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
+            note = itemView.findViewById(R.id.note);
+            lastupdate = itemView.findViewById(R.id.lastupdate);
         }
     }
 }

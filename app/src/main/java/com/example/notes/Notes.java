@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -26,8 +28,9 @@ public class Notes extends Fragment {
 
     private DatabaseHelper database;
     private List<Note> notes;
-    RecyclerView notesView;
-    FloatingActionButton addNotes;
+    private RecyclerView notesView;
+    private NotesRecylerView adapter;
+    private FloatingActionButton addNotes;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,6 +51,7 @@ public class Notes extends Fragment {
         notes = new ArrayList<>();
         notesView = v.findViewById(R.id.notesRecylerView);
         notesView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        new ItemTouchHelper(itemTouchHelperSimpleCallback).attachToRecyclerView(notesView);
         retrieveData();
 
         return v;
@@ -72,11 +76,12 @@ public class Notes extends Fragment {
             notes.add(new Note(ID, NOTE, UPDATEDAT));
         }
 
+        adapter = new NotesRecylerView(getActivity(), notes);
+        notesView.setAdapter(adapter);
+
         if ( notes.size() == 0 ) {
             Toast.makeText(getActivity(), "No data in the database", Toast.LENGTH_LONG).show();
-            return;
         }
-        notesView.setAdapter(new NotesRecylerView(getActivity(), notes));
     }
 
     @Override
@@ -84,4 +89,19 @@ public class Notes extends Fragment {
         super.onResume();
         retrieveData();
     }
+
+    ItemTouchHelper.SimpleCallback itemTouchHelperSimpleCallback =
+            new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+                @Override
+                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                    return false;
+                }
+
+                @Override
+                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                    database.delete_table1(Integer.toString(notes.get(viewHolder.getAdapterPosition()).getId()));
+                    notes.remove(viewHolder.getAdapterPosition());
+                    adapter.notifyDataSetChanged();
+                }
+            };
 }

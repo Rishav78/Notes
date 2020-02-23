@@ -5,7 +5,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,6 +34,7 @@ public class Tasks extends Fragment {
     private DatabaseHelper database;
     private List<Task> tasks;
     private RecyclerView taskView;
+    private TasksRecylerView adapter;
     private FloatingActionButton addTasks;
 
 
@@ -46,7 +49,7 @@ public class Tasks extends Fragment {
         taskView = v.findViewById(R.id.tasksRecylerView);
 
         taskView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
+        new ItemTouchHelper(itemTouchHelperSimpleCallback).attachToRecyclerView(taskView);
 
         retrieveData();
 
@@ -70,7 +73,21 @@ public class Tasks extends Fragment {
         if ( tasks.size() == 0 ) {
             Toast.makeText(getActivity(), "No task in the database", Toast.LENGTH_LONG).show();
         }
-
-        taskView.setAdapter(new TasksRecylerView(getActivity(), tasks));
+        adapter = new TasksRecylerView(getActivity(), tasks);
+        taskView.setAdapter(adapter);
     }
+
+    ItemTouchHelper.SimpleCallback itemTouchHelperSimpleCallback =
+            new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+                @Override
+                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                    return false;
+                }
+
+                @Override
+                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                    tasks.remove(viewHolder.getAdapterPosition());
+                    adapter.notifyDataSetChanged();
+                }
+            };
 }

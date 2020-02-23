@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     app:layout_maxHeight="160dp"
     android:layout_margin="5dp"
-    app:cardBackgroundColor="#333">
+    app:cardBackgroundColor="#262626">
 
     <LinearLayout
         android:layout_width="match_parent"

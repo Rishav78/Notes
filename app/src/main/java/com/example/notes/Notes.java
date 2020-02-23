@@ -67,7 +67,6 @@ public class Notes extends Fragment {
 
         notes.clear();
 
-        StringBuffer str = new StringBuffer();
         Cursor res = database.getAllData_table1();
 
         while ( res.moveToNext() ) {

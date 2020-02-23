@@ -60,17 +60,19 @@ public class TasksRecylerView extends RecyclerView.Adapter<TasksRecylerView.MyVi
             @Override
             public void onClick(View v) {
                 CheckBox checkBox = (CheckBox)v;
+                Task task = tasks.get(position);
+                tasks.remove(position);
                 if ( checkBox.isChecked() ) {
-                    database.update_table2( Integer.toString(tasks.get(position).getId()), tasks.get(position).getTask(), 0);
-                    tasks.get(position).setActivate(0);
-                    Deactivate(holder, position);
+                    database.update_table2( Integer.toString(task.getId()), task.getTask(), 0);
+                    task.setActivate(0);
+                    tasks.add(task);
                 }
                 else {
-
-                    database.update_table2( Integer.toString(tasks.get(position).getId()), tasks.get(position).getTask(), 1);
-                    tasks.get(position).setActivate(1);
-                    Activate(holder, position);
+                    database.update_table2( Integer.toString(task.getId()), task.getTask(), 1);
+                    task.setActivate(1);
+                    tasks.add(0, task);
                 }
+                notifyDataSetChanged();
             }
         });
 
@@ -169,7 +171,7 @@ public class TasksRecylerView extends RecyclerView.Adapter<TasksRecylerView.MyVi
                 String updatedTask = taskDescription.getText().toString();
                 tasks.get(position).setTask(updatedTask);
                 database.update_table2(Integer.toString(tasks.get(position).getId()), updatedTask, tasks.get(position).getActivate());
-                notifyDataSetChanged();
+                notifyItemChanged(position);
                 addNewTaskDiaglog.hide();
             }
         });
